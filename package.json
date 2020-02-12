@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "parcel src/index.html",
-    "build": "parcel build src/index.html",
+    "build": "parcel build src/index.html --public-url '.'",
     "start": "npm run build && live-server dist",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"
