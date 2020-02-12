@@ -7,6 +7,7 @@
 @font-face {
   font-family: EconomicaBold;
   src: url(assets/economica-bold.ttf);
+  font-weight: 800;
 }
 
 body {
@@ -16,6 +17,23 @@ body {
   font-family: 'RobotoCondensed';
 }
 
-h1, h2, h3, h4, h5 {
+h1, h2, h3, h4 {
   font-family: 'EconomicaBold';
+}
+
+.vote-button {
+  color: white;
+}
+
+.vote-down{
+  background-color: white;
+  color: red;
+  padding: 2px;
+
+}
+
+.vote-up{
+  background-color: white;
+  color: blue;
+  padding: 2px;
 }
