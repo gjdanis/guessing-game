@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import AI from './AI';
-import AIGame from './AIGame';
+import VersusAIComponent from './VersusAIComponent';
+import VersusHumanComponent from './VersusHumanComponent';
 
 const MIN_NUMBER = 1;
 const MAX_NUMBER = 1000;
@@ -34,6 +35,9 @@ class App extends Component {
   }
 
   render() {
+  
+    return <VersusHumanComponent />
+
     const { isWinner, isStarted, isAIPlaying } = this.state;
 
     if (!this.state.isStarted) {
@@ -59,8 +63,9 @@ class App extends Component {
     }
     
     if (isAIPlaying) {
-      return <AIGame ai={this.ai} onNewGuess={this.onNewGuess} />
+      return <VersusAIComponent ai={this.ai} onNewGuess={this.onNewGuess} />
     }
+
   }
 }
 

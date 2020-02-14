@@ -10,7 +10,7 @@
   font-weight: 800;
 }
 
-body {
+body, ul, li {
   text-align: center;
   font-size: 20px;
   padding: 2.5%;

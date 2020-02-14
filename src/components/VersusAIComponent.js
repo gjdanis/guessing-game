@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-export default class AIGame extends Component {
+export default class VersusAIComponent extends Component {
   constructor(props) {
     super(props);
     this.ai = props.ai;
