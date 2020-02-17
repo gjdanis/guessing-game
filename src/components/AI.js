@@ -2,27 +2,27 @@ const average = (a, b) => Math.floor((a + b) / 2);
 
 export default class AI {
   constructor(bestMin, bestMax) {
-    this.bestMin = bestMin;
-    this.bestMax = bestMax;
-    this.bestGuess = null;
+    this.startingBestMin = bestMin;
+    this.startingBestMax = bestMax;
+    this.resetGuesses();
+  }
+  
+  resetGuesses() {
+    this.currentBestMin = this.startingBestMin;
+    this.currentBestMax = this.startingBestMax;
+    this.currentBestGuess = null;
   }
 
   getNextGuess() {
-    this.bestGuess = average(this.bestMin, this.bestMax);
-    return this.bestGuess;
+    this.currentBestGuess = average(this.currentBestMin, this.currentBestMax);
+    return this.currentBestGuess;
   }
 
   lastGuessIsTooHigh() {
-    this.bestMax = this.bestGuess;
+    this.currentBestMax = this.currentBestGuess;
   }
 
   lastGuessIsTooLow() {
-    this.bestMin = this.bestGuess;
-  }
-
-  resetGuesses() {
-    this.bestMin = MIN_NUMBER
-    this.bestMax = MAX_NUMBER
-    this.bestGuess = null
+    this.currentBestMin = this.currentBestGuess;
   }
 }

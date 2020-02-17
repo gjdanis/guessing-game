@@ -1,72 +1,43 @@
 import React, { Component } from 'react';
-import AI from './AI';
-import VersusAIComponent from './VersusAIComponent';
-import VersusHumanComponent from './VersusHumanComponent';
+import AIGameComponent from './AIGameComponent';
+import HumanGameComponent from './HumanGameComponent';
 
 const MIN_NUMBER = 1;
 const MAX_NUMBER = 1000;
 const MAX_GUESSES = 10;
 
-class App extends Component {
+
+export default class App extends Component {
   state = {
-    bestGuess: null,
-    isStarted: false,
-    isWinner: false,
-    isAIPlaying: true,
-    numGuesses: 0
+    isAiPlaying: true
   };
 
-  ai = new AI(MIN_NUMBER, MAX_NUMBER);
-
-  isGameOver = () => this.state.isWinner || this.state.numGuesses > MAX_GUESSES;
-
-  onStartGame = () => {
-    this.setState({
-      isStarted: true,
-      bestGuess: this.ai.getNextGuess()
-    })
-  }
-
-  onNewGuess = () => {
-    this.setState({numGuesses: this.state.numGuesses + 1});
-  }
-
-  onRestartGame = () => {
-  }
+  onToggleGameMode = () => this.setState({ isAiPlaying: !this.state.isAiPlaying });
 
   render() {
-  
-    return <VersusHumanComponent />
+    const gameModeToggle = (
+      <button onClick={this.onToggleGameMode}>
+        { this.state.isAiPlaying ? 'Play as guesser' : 'Play against computer'}
+      </button>
+    );
 
-    const { isWinner, isStarted, isAIPlaying } = this.state;
+    const gameComponent = (
+      this.state.isAiPlaying ?
+        <AIGameComponent
+          minimumPossibleNumber={MIN_NUMBER}
+          maximumPossibleNumber={MAX_NUMBER}
+          allowedNumberOfGuesses={MAX_GUESSES}
+        /> :
+        <HumanGameComponent
+          allowedNumberOfGuesses={MAX_GUESSES}
+        />
+    );
 
-    if (!this.state.isStarted) {
-      return (
-        <div>
-          <h2>Guessing Game</h2> {
-            !isStarted && (
-              <div>
-                <p>Think of a number between 1 and 1000. I'll try and guess it!</p>
-                <button onClick={this.onStartGame}>Okay!</button>
-              </div>
-            )
-          } {
-            isWinner && (
-              <div>
-                <p>Nice game!</p>
-                <button onClick={this.onPlayAgain}>Play again?</button>
-              </div>
-            )
-          }
-        </div>
-      );
-    }
-    
-    if (isAIPlaying) {
-      return <VersusAIComponent ai={this.ai} onNewGuess={this.onNewGuess} />
-    }
-
+    return (
+      <div>
+        {gameModeToggle}
+        {gameComponent}
+      </div>
+    );
   }
 }
-
-export default App;
