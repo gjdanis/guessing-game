@@ -24007,7 +24007,212 @@ if ("development" === 'production') {
 } else {
   module.exports = require('./cjs/react-dom.development.js');
 }
-},{"./cjs/react-dom.development.js":"../node_modules/react-dom/cjs/react-dom.development.js"}],"components/App.js":[function(require,module,exports) {
+},{"./cjs/react-dom.development.js":"../node_modules/react-dom/cjs/react-dom.development.js"}],"components/AI.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var average = function average(a, b) {
+  return Math.floor((a + b) / 2);
+};
+
+var AI =
+/*#__PURE__*/
+function () {
+  function AI(bestMin, bestMax) {
+    _classCallCheck(this, AI);
+
+    this.startingBestMin = bestMin;
+    this.startingBestMax = bestMax;
+    this.resetGuesses();
+  }
+
+  _createClass(AI, [{
+    key: "resetGuesses",
+    value: function resetGuesses() {
+      this.currentBestMin = this.startingBestMin;
+      this.currentBestMax = this.startingBestMax;
+      this.currentBestGuess = null;
+    }
+  }, {
+    key: "getNextGuess",
+    value: function getNextGuess() {
+      this.currentBestGuess = average(this.currentBestMin, this.currentBestMax);
+      return this.currentBestGuess;
+    }
+  }, {
+    key: "lastGuessIsTooHigh",
+    value: function lastGuessIsTooHigh() {
+      this.currentBestMax = this.currentBestGuess;
+    }
+  }, {
+    key: "lastGuessIsTooLow",
+    value: function lastGuessIsTooLow() {
+      this.currentBestMin = this.currentBestGuess;
+    }
+  }]);
+
+  return AI;
+}();
+
+exports.default = AI;
+},{}],"components/AIGameComponent.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireWildcard(require("react"));
+
+var _AI = _interopRequireDefault(require("./AI"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var AIGameComponent =
+/*#__PURE__*/
+function (_Component) {
+  _inherits(AIGameComponent, _Component);
+
+  function AIGameComponent(props) {
+    var _this;
+
+    _classCallCheck(this, AIGameComponent);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(AIGameComponent).call(this, props));
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "isStarted", function () {
+      return _this.state.currentBestGuess !== null;
+    });
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "isGameOver", function () {
+      return _this.state.aiVictorious || _this.state.numGuesses <= 0;
+    });
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "onPlayAgain", function () {
+      _this.ai.resetGuesses();
+
+      _this.setState({
+        currentBestGuess: null,
+        numGuesses: _this.maximumGuesses,
+        aiVictorious: false
+      });
+    });
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "onStartGame", function () {
+      var guess = _this.ai.getNextGuess();
+
+      console.log(guess);
+
+      _this.setState({
+        currentBestGuess: guess
+      });
+    });
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "onGuessHigher", function () {
+      _this.ai.lastGuessIsTooLow();
+
+      _this.setState({
+        currentBestGuess: _this.ai.getNextGuess(),
+        numGuesses: _this.state.numGuesses - 1
+      });
+    });
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "onGuessLower", function () {
+      _this.ai.lastGuessIsTooHigh();
+
+      _this.setState({
+        currentBestGuess: _this.ai.getNextGuess(),
+        numGuesses: _this.state.numGuesses - 1
+      });
+    });
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "onGuessedMyNumber", function () {
+      return _this.setState({
+        aiVictorious: true
+      });
+    });
+
+    _this.ai = new _AI.default(props.minimumPossibleNumber, props.maximumPossibleNumber);
+    _this.maximumGuesses = props.allowedNumberOfGuesses;
+    _this.state = {
+      currentBestGuess: null,
+      numGuesses: _this.maximumGuesses,
+      aiVictorious: false
+    };
+    return _this;
+  }
+
+  _createClass(AIGameComponent, [{
+    key: "render",
+    value: function render() {
+      if (!this.isStarted()) {
+        return _react.default.createElement("div", {
+          className: "container"
+        }, _react.default.createElement("p", null, "Think of a number between 1 and 1000. I'll try and guess it!"), _react.default.createElement("button", {
+          onClick: this.onStartGame
+        }, "Okay!"));
+      }
+
+      if (this.isGameOver()) {
+        return _react.default.createElement("div", {
+          className: "container"
+        }, _react.default.createElement("p", null, "Play again?"), _react.default.createElement("button", {
+          onClick: this.onPlayAgain
+        }, "Okay!"), _react.default.createElement("button", {
+          onClick: this.props.onToggleGameMode
+        }, "Let Me Guess!"));
+      }
+
+      return _react.default.createElement("div", {
+        className: "container"
+      }, _react.default.createElement("p", null, "Is your number ", this.state.currentBestGuess, "?"), _react.default.createElement("button", {
+        onClick: this.onGuessHigher
+      }, "Higher"), _react.default.createElement("button", {
+        onClick: this.onGuessLower
+      }, "Lower"), _react.default.createElement("button", {
+        onClick: this.onGuessedMyNumber
+      }, "Yes that's it!"));
+    }
+  }]);
+
+  return AIGameComponent;
+}(_react.Component);
+
+exports.default = AIGameComponent;
+},{"react":"../node_modules/react/index.js","./AI":"components/AI.js"}],"components/HumanGameComponent.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -24029,7 +24234,181 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+// https://www.codingame.com/playgrounds/6517/react-router-tutorial
+var HumanGameComponent =
+/*#__PURE__*/
+function (_Component) {
+  _inherits(HumanGameComponent, _Component);
+
+  function HumanGameComponent(props) {
+    var _this;
+
+    _classCallCheck(this, HumanGameComponent);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(HumanGameComponent).call(this, props));
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "lastGuess", function () {
+      if (_this.state.guesses.length === 0) {
+        return null;
+      }
+
+      return _this.state.guesses[_this.state.guesses.length - 1];
+    });
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "isHumanWinner", function () {
+      return _this.lastGuess() === _this.chosenNumber;
+    });
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "isHumanLoser", function () {
+      return _this.numGuesses <= 0;
+    });
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "onStartGame", function () {
+      return _this.setState({
+        isStarted: true
+      });
+    });
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "onSubmitGuess", function (e) {
+      _this.setState({
+        guesses: _this.state.guesses.concat(parseInt(_this.state.guessInput)),
+        guessInput: '',
+        numGuesses: _this.numGuesses - 1
+      });
+
+      e.preventDefault();
+    });
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "onGuessChanged", function (e) {
+      return _this.setState({
+        guessInput: e.target.value
+      });
+    });
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "onPlayAgain", function () {
+      return _this.setState({
+        isStarted: false,
+        guesses: [],
+        guessInput: '',
+        numGuesses: _this.maximumGuesses
+      });
+    });
+
+    _this.chosenNumber = 100;
+    _this.maximumGuesses = props.allowedNumberOfGuesses;
+    _this.state = {
+      isStarted: false,
+      guesses: [],
+      guessInput: '',
+      numGuesses: _this.maximumGuesses
+    };
+    return _this;
+  }
+
+  _createClass(HumanGameComponent, [{
+    key: "getHintText",
+    value: function getHintText() {
+      if (this.lastGuess() === null) {
+        return null;
+      }
+
+      if (this.chosenNumber - this.lastGuess() > 0) {
+        return 'Hint: My number is higher than ' + this.lastGuess();
+      }
+
+      return 'Hint: My number is lower than ' + this.lastGuess();
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      if (!this.state.isStarted) {
+        return _react.default.createElement("div", {
+          className: "container"
+        }, _react.default.createElement("p", null, "Try and guess my number in 10 guesses!"), _react.default.createElement("button", {
+          onClick: this.onStartGame
+        }, "Start"));
+      }
+
+      if (this.isHumanWinner()) {
+        return _react.default.createElement("div", {
+          className: "container"
+        }, _react.default.createElement("p", null, "Nice guessing - ", this.chosenNumber, " was my number!"), _react.default.createElement("button", {
+          onClick: this.onPlayAgain
+        }, "Play again!"), _react.default.createElement("button", {
+          onClick: this.props.onToggleGameMode
+        }, "Play Against Computer!"));
+      }
+
+      if (this.isHumanLoser()) {
+        return _react.default.createElement("div", {
+          className: "container"
+        }, _react.default.createElement("p", null, "My number was ", this.chosenNumber), _react.default.createElement("button", {
+          onClick: this.onPlayAgain
+        }, "Play again?"));
+      }
+
+      return _react.default.createElement("div", {
+        className: "container"
+      }, _react.default.createElement("p", null, "I picked a number between 1 and 1000. Try and guess it!"), this.getHintText(), _react.default.createElement("ul", {
+        reversed: true
+      }, this.state.guesses.map(function (guess, index) {
+        return _react.default.createElement("li", {
+          key: index
+        }, "You guessed: ", guess);
+      })), _react.default.createElement("form", {
+        onSubmit: this.onSubmitGuess
+      }, _react.default.createElement("label", null, "Guess:", _react.default.createElement("input", {
+        type: "text",
+        value: this.state.guessInput,
+        onChange: this.onGuessChanged
+      })), _react.default.createElement("input", {
+        type: "submit",
+        value: "Submit"
+      })));
+    }
+  }]);
+
+  return HumanGameComponent;
+}(_react.Component);
+
+exports.default = HumanGameComponent;
+},{"react":"../node_modules/react/index.js"}],"components/App.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireWildcard(require("react"));
+
+var _AIGameComponent = _interopRequireDefault(require("./AIGameComponent"));
+
+var _HumanGameComponent = _interopRequireDefault(require("./HumanGameComponent"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
@@ -24037,30 +24416,68 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var MIN_NUMBER = 1;
+var MAX_NUMBER = 1000;
+var MAX_GUESSES = 10;
+
 var App =
 /*#__PURE__*/
 function (_Component) {
   _inherits(App, _Component);
 
   function App() {
+    var _getPrototypeOf2;
+
+    var _this;
+
     _classCallCheck(this, App);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(App).apply(this, arguments));
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(App)).call.apply(_getPrototypeOf2, [this].concat(args)));
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "state", {
+      isAiPlaying: true
+    });
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "onToggleGameMode", function () {
+      return _this.setState({
+        isAiPlaying: !_this.state.isAiPlaying
+      });
+    });
+
+    return _this;
   }
 
   _createClass(App, [{
     key: "render",
     value: function render() {
-      return _react.default.createElement("div", null, "React App");
+      if (this.state.isAiPlaying) {
+        return _react.default.createElement(_AIGameComponent.default, {
+          minimumPossibleNumber: MIN_NUMBER,
+          maximumPossibleNumber: MAX_NUMBER,
+          allowedNumberOfGuesses: MAX_GUESSES,
+          onToggleGameMode: this.onToggleGameMode
+        });
+      }
+
+      return _react.default.createElement(_HumanGameComponent.default, {
+        allowedNumberOfGuesses: MAX_GUESSES
+      });
     }
   }]);
 
   return App;
 }(_react.Component);
 
-var _default = App;
-exports.default = _default;
-},{"react":"../node_modules/react/index.js"}],"../node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
+exports.default = App;
+},{"react":"../node_modules/react/index.js","./AIGameComponent":"components/AIGameComponent.js","./HumanGameComponent":"components/HumanGameComponent.js"}],"../node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
 var bundleURL = null;
 
 function getBundleURLCached() {
@@ -24132,7 +24549,7 @@ var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
 module.hot.accept(reloadCSS);
-},{"./assets/roboto-condensed.light.ttf":[["roboto-condensed.light.6709adf4.ttf","assets/roboto-condensed.light.ttf"],"assets/roboto-condensed.light.ttf"],"./assets/economica-bold.ttf":[["economica-bold.12a9e27d.ttf","assets/economica-bold.ttf"],"assets/economica-bold.ttf"],"_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"index.js":[function(require,module,exports) {
+},{"_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"index.js":[function(require,module,exports) {
 "use strict";
 
 var _react = _interopRequireDefault(require("react"));
@@ -24173,7 +24590,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55772" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55937" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
@@ -24316,4 +24733,4 @@ function hmrAccept(bundle, id) {
   });
 }
 },{}]},{},["../node_modules/parcel-bundler/src/builtins/hmr-runtime.js","index.js"], null)
-//# sourceMappingURL=src.e31bb0bc.map
+//# sourceMappingURL=/src.e31bb0bc.map
